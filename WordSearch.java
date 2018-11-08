@@ -37,6 +37,18 @@ public class WordSearch{
      *separated by newlines.
      */
     public String toString(){
+      String output = "";
+      int idx = 0;
+      while (idx < data.length) {
+        int x = 0;
+        while (x < data[idx].length) {
+          output += data[idx][x] + " ";
+          x += 1;
+        }
+        output += "\n";
+        idx += 1;
+      }
+      return output;
     }
 
 
