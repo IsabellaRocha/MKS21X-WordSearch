@@ -68,7 +68,7 @@ public class WordSearch{
      * and the board is NOT modified.
      */
     public boolean addWordHorizontal(String word,int row, int col){
-      if ((row >= this.row || col >= this.col) || (word.length() + col > this.col)) {
+      if ((row >= this.row) || (word.length() + col > this.col)) {
         return false;
       }
       int idx = col;
@@ -100,7 +100,7 @@ public class WordSearch{
      *and the board is NOT modified.
      */
     public boolean addWordVertical(String word,int row, int col){
-      if ((row >= this.row || col >= this.col) || (word.length() + row > this.row)) {
+      if ((col >= this.col) || (word.length() + row > this.row)) {
         return false;
       }
       int idx = row;
@@ -116,6 +116,40 @@ public class WordSearch{
       while (x < word.length() + row) {
         data[x][col] = word.charAt(x - row);
         x += 1;
+      }
+      return true;
+    }
+    /**Attempts to add a given word to the specified position of the WordGrid.
+     *The word is added from top left to bottom right, must fit on the WordGrid,
+     *and must have a corresponding letter to match any letters that it overlaps.
+     *
+     *@param word is any text to be added to the word grid.
+     *@param row is the vertical locaiton of where you want the word to start.
+     *@param col is the horizontal location of where you want the word to start.
+     *@return true when the word is added successfully. When the word doesn't fit,
+     *or there are overlapping letters that do not match, then false is returned.
+     */
+    public boolean addWordDiagonal(String word,int row, int col){
+      if ((word.length() + row > this.row) || (word.length() + col > this.col)) {
+        return false;
+      }
+      int x = row;
+      int y = col;
+      while (x < word.length() + row) {
+        if (data[x][y] != '_') {
+          if (word.charAt(x - row) != data[x][y]) {
+            return false;
+          }
+        }
+        x += 1;
+        y += 1;
+      }
+      x = row;
+      y = col;
+      while (x < word.length() + row) {
+        data[x][y] = word.charAt(x - row);
+        x += 1;
+        y += 1;
       }
       return true;
     }
