@@ -48,36 +48,36 @@ public class Driver{
     System.out.println("word search be the same as before:");
     System.out.println(first.toString());
 
-//    System.out.println("---Testing addWordVertical---");
-//    System.out.println("testing add NO vertically to row 0, column 0: should return true");
-//    System.out.println(first.addWordVertical("NO", 0, 0));
-//    System.out.println("word search should be modified:");
-//    System.out.println(first.toString());
+    System.out.println("---Testing addWordVertical---");
+    System.out.println("testing add NO vertically to row 0, column 0: should return true");
+    System.out.println(first.addWordVertical("NO", 0, 0));
+    System.out.println("word search should be modified:");
+    System.out.println(first.toString());
 
-//    System.out.println("\ntesting add NOYS vertically to row 0, column 0: should return true");
-//    System.out.println(first.addWordVertical("NOYS", 0, 0));
-//    System.out.println("word search should be modified:");
-//    System.out.println(first.toString());
+    System.out.println("\ntesting add NOYS vertically to row 0, column 0: should return true");
+    System.out.println(first.addWordVertical("NOYS", 0, 0));
+    System.out.println("word search should be modified:");
+    System.out.println(first.toString());
 
-//    System.out.println("\ntesting add SUPER vertically to row 0, column 4: should return false");
-//    System.out.println(first.addWordVertical("SUPER", 0, 4));
-//    System.out.println("word search should be the same as before:");
-//    System.out.println(first.toString());
+    System.out.println("\ntesting add SUPER vertically to row 0, column 4: should return false");
+    System.out.println(first.addWordVertical("SUPER", 0, 4));
+    System.out.println("word search should be the same as before:");
+    System.out.println(first.toString());
 
-//    System.out.println("\ntesting add SUPER vertically to row 2, column 2: should return true");
-//    System.out.println(first.addWordVertical("SUPER", 2, 2));
-//    System.out.println("word search should be modified:");
-//    System.out.println(first.toString());
+    System.out.println("\ntesting add SUPER vertically to row 2, column 2: should return true");
+    System.out.println(first.addWordVertical("SUPER", 2, 2));
+    System.out.println("word search should be modified:");
+    System.out.println(first.toString());
 
-//    System.out.println("\ntesting add EYES vertically to row 0, column 1: should return true");
-//    System.out.println(first.addWordVertical("EYES", 0, 1));
-//    System.out.println("word search should be modified:");
-//    System.out.println(first.toString());
+    System.out.println("\ntesting add EYES vertically to row 0, column 1: should return true");
+    System.out.println(first.addWordVertical("EYES", 0, 1));
+    System.out.println("word search should be modified:");
+    System.out.println(first.toString());
 
-//    System.out.println("\ntesting add POPE vertically to row 0, column 4: should return false");
-//    System.out.println(first.addWordVertical("POPE", 0, 4));
-//    System.out.println("word search should be the same as before");
-//    System.out.println(first.toString());
+    System.out.println("\ntesting add POPE vertically to row 0, column 4: should return false");
+    System.out.println(first.addWordVertical("POPE", 0, 4));
+    System.out.println("word search should be the same as before");
+    System.out.println(first.toString());
 
   }
 }
