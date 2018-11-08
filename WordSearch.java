@@ -1,5 +1,7 @@
 public class WordSearch{
     private char[][]data;
+    private int row;
+    private int col;
 
     /**Initialize the grid to the size specified
      *and fill all of the positions with '_'
@@ -7,6 +9,8 @@ public class WordSearch{
      *@param col is the starting width of the WordSearch
      */
     public WordSearch(int rows,int cols){
+      row = rows;
+      col = cols;
       data = new char[rows][cols];
       int idx = 0;
       while (idx < data.length) {
@@ -64,6 +68,24 @@ public class WordSearch{
      * and the board is NOT modified.
      */
     public boolean addWordHorizontal(String word,int row, int col){
+      if ((row >= this.row || col >= this.col) || (word.length() + col > this.col)) {
+        return false;
+      }
+      int idx = col;
+      while (idx < word.length() + col) {
+        if (data[row][idx] != '_') {
+          if (word.charAt(idx - col) != data[row][idx]) {
+            return false;
+          }
+        }
+        idx += 1;
+      }
+      int x = col;
+      while (x < word.length() + col) {
+        data[row][x] = word.charAt(x - col);
+        x += 1;
+      }
+      return true;
     }
 
    /**Attempts to add a given word to the specified position of the WordGrid.
@@ -77,6 +99,6 @@ public class WordSearch{
      *or there are overlapping letters that do not match, then false is returned.
      *and the board is NOT modified.
      */
-    public boolean addWordVertical(String word,int row, int col){
-    }
+//    public boolean addWordVertical(String word,int row, int col){
+//    }
 }
