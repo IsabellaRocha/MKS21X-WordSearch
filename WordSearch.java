@@ -1,7 +1,13 @@
+import java.util.*; //random, scanner, arraylist
+import java.io.*; //file, filenotfoundexception
 public class WordSearch{
     private char[][]data;
     private int row;
     private int col;
+    private int seed;
+    private Random randgen;
+    private ArrayList<String>wordsToAdd;
+    private ArrayList<String>wordsAdded;
 
     /**Initialize the grid to the size specified
      *and fill all of the positions with '_'
@@ -41,20 +47,35 @@ public class WordSearch{
      *separated by newlines.
      */
     public String toString(){
-      String output = "";
+      String output = "|";
       int idx = 0;
       while (idx < data.length) {
         int x = 0;
         while (x < data[idx].length) {
-          output += data[idx][x] + " ";
+          output += data[idx][x];
           x += 1;
         }
-        output += "\n";
+        output += "|\n|";
         idx += 1;
       }
+      output = output.substring(0,output.length() - 1) + "Words: ";
       return output;
     }
-
+    private boolean addWord(int r, int c, String word, int rowIncrement, int colIncrement) {
+      if (rowIncrement == 0 && colIncrement == 0) {
+        return false;
+      }
+      if (r >= row || c >= col || word.length() + c > col || word.length() + r > row) {
+        return false;
+      }
+      int x = r;
+      int y = c;
+      while (x < word.length() + r) {
+        if (data[x][y] != '_') {
+          if (word.charAt(x - row))
+        }
+      }
+    }
 
     /**Attempts to add a given word to the specified position of the WordGrid.
      *The word is added from left to right, must fit on the WordGrid, and must
