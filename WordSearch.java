@@ -14,7 +14,7 @@ public class WordSearch{
      *@param row is the starting height of the WordSearch
      *@param col is the starting width of the WordSearch
      */
-    public WordSearch(int rows,int cols) {
+    public WordSearch(int rows, int cols, String fileName) {
       row = rows;
       col = cols;
       data = new char[rows][cols];
@@ -22,14 +22,33 @@ public class WordSearch{
       seed = randgen.nextInt();
       clear();
       try {
-        File f = new File("words.txt");
+        File f = new File(fileName);
         Scanner in = new Scanner(f);
         String output = "";
-        int idx = 0;
         while (in.hasNext()) {
           output += in.nextLine() + ", ";
-          wordsToAdd.set(idx, in.nextLine());
-          idx += 1;
+          wordsToAdd.add(in.nextLine());
+        }
+      }
+      catch (FileNotFoundException e) {
+        System.out.println("File not found");
+        System.exit(1);
+      }
+    }
+    public WordSearch(int rows, int cols, String fileName, int randSeed) {
+      row = rows;
+      col = cols;
+      data = new char[rows][cols];
+      randgen = new Random();
+      seed = randSeed;
+      clear();
+      try {
+        File f = new File(fileName);
+        Scanner in = new Scanner(f);
+        String output = "";
+        while (in.hasNext()) {
+          output += in.nextLine() + ", ";
+          wordsToAdd.add(in.nextLine());
         }
       }
       catch (FileNotFoundException e) {
