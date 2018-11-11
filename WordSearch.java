@@ -7,8 +7,8 @@ public class WordSearch{
     private int col;
     private int seed;
     private Random randgen;
-    private ArrayList<String>wordsToAdd;
-    private ArrayList<String>wordsAdded;
+    private ArrayList<String>wordsToAdd = new ArrayList<String>();
+    private ArrayList<String>wordsAdded = new ArrayList<String>();
 
     /**Initialize the grid to the size specified
      *and fill all of the positions with '_'
@@ -25,8 +25,7 @@ public class WordSearch{
       File f = new File(fileName);
       Scanner in = new Scanner(f);
       while (in.hasNext()) {
-        String line = in.nextLine().toUpperCase();
-        wordsToAdd.add(line);
+        wordsToAdd.add(in.nextLine().toUpperCase());
       }
       addAllWords();
     }
@@ -39,8 +38,7 @@ public class WordSearch{
       File f = new File(fileName);
       Scanner in = new Scanner(f);
       while (in.hasNext()) {
-        String line = in.nextLine().toUpperCase();
-        wordsToAdd.add(line);
+        wordsToAdd.add(in.nextLine().toUpperCase());
       }
       addAllWords();
     }
@@ -68,18 +66,13 @@ public class WordSearch{
       while (idx < data.length) {
         int x = 0;
         while (x < data[idx].length) {
-          output += data[idx][x];
+          output += data[idx][x] + " ";
           x += 1;
         }
         output += "|\n|";
         idx += 1;
       }
-      output = output.substring(0,output.length() - 1) + "Words: ";
-      idx = 0;
-      while (idx < wordsAdded.size() - 1) {
-        output += wordsAdded.get(idx) + ", ";
-      }
-      output += wordsAdded.get(wordsAdded.size() - 1);
+      output = output.substring(0,output.length() - 1) + "Words: " + wordsAdded;
       return output;
     }
     /**Attempts to add a given word to the specified position of the WordGrid.
@@ -96,7 +89,7 @@ public class WordSearch{
     *        OR there are overlapping letters that do not match
     */
     private boolean addWord(int r, int c, String word, int rowIncrement, int colIncrement) {
-      int og = word.length();
+      word = word.toUpperCase();
       if (rowIncrement == 0 && colIncrement == 0) {
         return false;
       }
@@ -104,6 +97,12 @@ public class WordSearch{
         return false;
       }
       if (rowIncrement > 1 || colIncrement > 1 || rowIncrement < 0 || colIncrement < 0) {
+        return false;
+      }
+      if (r + word.length() * rowIncrement < 0 || r + word.length() * rowIncrement > row) {
+        return false;
+      }
+      if (c + word.length() * colIncrement < 0 || c + word.length() * colIncrement > col) {
         return false;
       }
       int x = r;
@@ -119,7 +118,7 @@ public class WordSearch{
       }
       x = r;
       y = c;
-      while (x < word.length() + r) {
+      while (x < word.length() + r && y < word.length() + c) {
         data[x][y] = word.charAt(x - r);
         x += rowIncrement;
         y += colIncrement;
@@ -155,17 +154,17 @@ public class WordSearch{
       int c;
       boolean add;
       while (wordsToAdd.size() > 0) {
-        idx = randgen.nextInt() % wordsToAdd.size();
+        idx = Math.abs(randgen.nextInt() % wordsToAdd.size());
         word = wordsToAdd.get(idx).toUpperCase();
-        rowIncrement = randgen.nextInt();
-        colIncrement = randgen.nextInt();
-        rows = col - word.length() * colIncrement;
-        cols = row - word.length() * rowIncrement;
+        rowIncrement = randgen.nextInt() % 2;
+        colIncrement = randgen.nextInt() % 2;
+        rows = row + 1 - word.length() * colIncrement;
+        cols = col + 1 - word.length() * rowIncrement;
         add = false;
         if (rows > 0 && cols > 0) {
           while (fails < 150 && !add) {
-            r = randgen.nextInt() % rows;
-            c = randgen.nextInt() % cols;
+            r = Math.abs(randgen.nextInt() % rows);
+            c = Math.abs(randgen.nextInt() % cols);
             if (addWord(r, c, word, rowIncrement, colIncrement)) {
               wordsAdded.add(wordsToAdd.remove(idx));
               add = true;
