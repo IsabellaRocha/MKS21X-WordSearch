@@ -108,27 +108,51 @@ public class WordSearch{
       int x = r;
       int y = c;
       int idx = 0;
-      while (x < word.length() + r && y < word.length() + c) {
-        if (data[x][y] != '_') {
-          if (word.charAt(idx) != data[x][y]) {
-            return false;
+      if (rowIncrement == 1 || colIncrement == 1) {
+        while (x < word.length() + r && y < word.length() + c) {
+          if (data[x][y] != '_') {
+            if (word.charAt(idx) != data[x][y]) {
+              return false;
+            }
           }
+          x += rowIncrement;
+          y += colIncrement;
+          idx += 1;
         }
-        x += rowIncrement;
-        y += colIncrement;
-        idx += 1;
+      }
+      if (rowIncrement == -1 || colIncrement == -1) {
+        while (x >= 0 && y >= 0) {
+          if (data[x][y] != '_') {
+            if (word.charAt(idx) != data[x][y]) {
+              return false;
+            }
+          }
+          x += rowIncrement;
+          y += colIncrement;
+          idx += 1;
+        }
       }
       x = r;
       y = c;
       idx = 0;
-      while (x < word.length() + r && y < word.length() + c) {
+      if (rowIncrement == 1 || colIncrement == 1) {
+        while (x < word.length() + r && y < word.length() + c) {
         data[x][y] = word.charAt(idx);
         x += rowIncrement;
         y += colIncrement;
         idx += 1;
       }
-      return true;
     }
+      if (rowIncrement == -1 || colIncrement == -1) {
+        while (x >= 0 && y >= 0) {
+        data[x][y] = word.charAt(idx);
+        x += rowIncrement;
+        y += colIncrement;
+        idx += 1;
+      }
+    }
+    return true;
+  }
     /*[rowIncrement,colIncrement] examples:
      *[-1,1] would add up and the right because (row -1 each time, col + 1 each time)
      *[ 1,0] would add downwards because (row+1), with no col change
@@ -147,21 +171,16 @@ public class WordSearch{
      * and the board is NOT modified.
      */
     private void addAllWords() {
-      int fails = 0;
-      int idx = 0;
-      String word;
-      int r;
-      int c;
-      boolean check;
       while (wordsToAdd.size() > 0) {
-        idx = Math.abs(randgen.nextInt() % wordsToAdd.size());
-        word = wordsToAdd.get(idx).toUpperCase();
-        int rowIncrement = randgen.nextInt() % 2;
-        int colIncrement = randgen.nextInt() % 2;
-        check = false;
+        int idx = Math.abs(randgen.nextInt() % wordsToAdd.size());
+        String word = wordsToAdd.get(idx).toUpperCase();
+        int rowIncrement = Math.abs(randgen.nextInt()) % 3 - 1;
+        int colIncrement = Math.abs(randgen.nextInt()) % 3 - 1;
+        boolean check = false;
+        int fails = 0;
         while (fails < 150 && !check) {
-          r = Math.abs(randgen.nextInt() % row);
-          c = Math.abs(randgen.nextInt() % col);
+          int r = Math.abs(randgen.nextInt() % row);
+          int c = Math.abs(randgen.nextInt() % col);
           if (addWord(r, c, word, rowIncrement, colIncrement)) {
             wordsAdded.add(wordsToAdd.remove(idx));
             check = true;
