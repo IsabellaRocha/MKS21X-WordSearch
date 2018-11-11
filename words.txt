@@ -4,3 +4,12 @@ Corgi
 Bulldog
 Terrier
 Yorki
+Samoyed
+Pomeranian
+Labrador
+Poodle
+Pug
+Maltese
+Greyhound
+Dalmation
+Boxer
