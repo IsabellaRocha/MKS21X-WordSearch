@@ -107,21 +107,25 @@ public class WordSearch{
       }
       int x = r;
       int y = c;
+      int idx = 0;
       while (x < word.length() + r && y < word.length() + c) {
         if (data[x][y] != '_') {
-          if (word.charAt(x - row) != data[x][y]) {
+          if (word.charAt(idx) != data[x][y]) {
             return false;
           }
         }
         x += rowIncrement;
         y += colIncrement;
+        idx += 1;
       }
       x = r;
       y = c;
+      idx = 0;
       while (x < word.length() + r && y < word.length() + c) {
-        data[x][y] = word.charAt(x - r);
+        data[x][y] = word.charAt(idx);
         x += rowIncrement;
         y += colIncrement;
+        idx += 1;
       }
       return true;
     }
