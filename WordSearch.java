@@ -1,5 +1,6 @@
 import java.util.*; //random, scanner, arraylist
 import java.io.*; //file, filenotfoundexception
+
 public class WordSearch{
     private char[][]data;
     private int row;
@@ -24,37 +25,36 @@ public class WordSearch{
       try {
         File f = new File(fileName);
         Scanner in = new Scanner(f);
-        String output = "";
         while (in.hasNext()) {
-          output += in.nextLine() + ", ";
-          wordsToAdd.add(in.nextLine());
+          String line = in.nextLine().toUpperCase();
+          wordsToAdd.add(line);
         }
       }
       catch (FileNotFoundException e) {
         System.out.println("File not found");
         System.exit(1);
       }
+      addAllWords();
     }
     public WordSearch(int rows, int cols, String fileName, int randSeed) {
       row = rows;
       col = cols;
       data = new char[rows][cols];
-      randgen = new Random();
-      seed = randSeed;
+      randgen = new Random(randSeed);
       clear();
       try {
         File f = new File(fileName);
         Scanner in = new Scanner(f);
-        String output = "";
         while (in.hasNext()) {
-          output += in.nextLine() + ", ";
-          wordsToAdd.add(in.nextLine());
+          String line = in.nextLine().toUpperCase();
+          wordsToAdd.add(line);
         }
       }
       catch (FileNotFoundException e) {
         System.out.println("File not found");
         System.exit(1);
       }
+      addAllWords();
     }
 
     /**Set all values in the WordSearch to underscores'_'*/
@@ -87,6 +87,11 @@ public class WordSearch{
         idx += 1;
       }
       output = output.substring(0,output.length() - 1) + "Words: ";
+      idx = 0;
+      while (idx < wordsAdded.size() - 1) {
+        output += wordsAdded.get(idx) + ", ";
+      }
+      output += wordsAdded.get(wordsAdded.size() - 1);
       return output;
     }
     /**Attempts to add a given word to the specified position of the WordGrid.
@@ -103,16 +108,14 @@ public class WordSearch{
     *        OR there are overlapping letters that do not match
     */
     private boolean addWord(int r, int c, String word, int rowIncrement, int colIncrement) {
+      int og = word.length();
       if (rowIncrement == 0 && colIncrement == 0) {
         return false;
       }
-      if (r >= row || c >= col) {
+      if (r >= row || c >= col || r < 0 || c < 0) {
         return false;
       }
-      if (word.length() + c > col || word.length() + r > row) {
-        return false;
-      }
-      if (c - word.length() < 0 || r - word.length() < row) {
+      if (rowIncrement > 1 || colIncrement > 1 || rowIncrement < 0 || colIncrement < 0) {
         return false;
       }
       int x = r;
@@ -152,6 +155,43 @@ public class WordSearch{
      * or there are overlapping letters that do not match, then false is returned
      * and the board is NOT modified.
      */
+    private void addAllWords() {
+      int fails = 0;
+      int idx = 0;
+      String word;
+      int rowIncrement;
+      int colIncrement;
+      int rows;
+      int cols;
+      int r;
+      int c;
+      boolean add;
+      while (wordsToAdd.size() > 0) {
+        idx = randgen.nextInt() % wordsToAdd.size();
+        word = wordsToAdd.get(idx).toUpperCase();
+        rowIncrement = randgen.nextInt();
+        colIncrement = randgen.nextInt();
+        rows = col - word.length() * colIncrement;
+        cols = row - word.length() * rowIncrement;
+        add = false;
+        if (rows > 0 && cols > 0) {
+          while (fails < 150 && !add) {
+            r = randgen.nextInt() % rows;
+            c = randgen.nextInt() % cols;
+            if (addWord(r, c, word, rowIncrement, colIncrement)) {
+              wordsAdded.add(wordsToAdd.remove(idx));
+              add = true;
+            }
+            else {
+              fails += 1;
+            }
+          }
+        }
+        if (!add) {
+          wordsToAdd.remove(idx);
+        }
+      }
+    }
     public boolean addWordHorizontal(String word,int row, int col){
       if ((row >= this.row) || (word.length() + col > this.col)) {
         return false;
