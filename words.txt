@@ -1,0 +1,6 @@
+Husky
+Beagle
+Corgi
+Bulldog
+Terrier
+Yorki
