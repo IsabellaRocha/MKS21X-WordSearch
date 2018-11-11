@@ -96,7 +96,7 @@ public class WordSearch{
       if (r >= row || c >= col || r < 0 || c < 0) {
         return false;
       }
-      if (rowIncrement > 1 || colIncrement > 1 || rowIncrement < 0 || colIncrement < 0) {
+      if (rowIncrement > 1 || colIncrement > 1 || rowIncrement < -1 || colIncrement < -1) {
         return false;
       }
       if (r + word.length() * rowIncrement < 0 || r + word.length() * rowIncrement > row) {
@@ -121,7 +121,7 @@ public class WordSearch{
         }
       }
       if (rowIncrement == -1 || colIncrement == -1) {
-        while (x >= 0 && y >= 0) {
+        while (x > r - word.length() && y > c - word.length()) {
           if (data[x][y] != '_') {
             if (word.charAt(idx) != data[x][y]) {
               return false;
@@ -143,14 +143,16 @@ public class WordSearch{
         idx += 1;
       }
     }
-    if (rowIncrement == -1 || colIncrement == -1) {
-      while (x >= 0 && y >= 0) {
+    else if (rowIncrement == -1 || colIncrement == -1) {
+      while (x > r - word.length() && y > c - word.length()) {
       data[x][y] = word.charAt(idx);
       x += rowIncrement;
       y += colIncrement;
       idx += 1;
       }
     }
+    wordsToAdd.remove(word);
+    wordsAdded.add(word);
     return true;
   }
     /*[rowIncrement,colIncrement] examples:
@@ -182,7 +184,6 @@ public class WordSearch{
           int rowIncrement = Math.abs(randgen.nextInt()) % 3 - 1;
           int colIncrement = Math.abs(randgen.nextInt()) % 3 - 1;
           if (addWord(r, c, word, rowIncrement, colIncrement)) {
-            wordsAdded.add(wordsToAdd.remove(idx));
             check = true;
           }
           else {
