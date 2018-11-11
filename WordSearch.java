@@ -15,44 +15,32 @@ public class WordSearch{
      *@param row is the starting height of the WordSearch
      *@param col is the starting width of the WordSearch
      */
-    public WordSearch(int rows, int cols, String fileName) {
+    public WordSearch(int rows, int cols, String fileName) throws FileNotFoundException {
       row = rows;
       col = cols;
       data = new char[rows][cols];
       randgen = new Random();
       seed = randgen.nextInt();
       clear();
-      try {
-        File f = new File(fileName);
-        Scanner in = new Scanner(f);
-        while (in.hasNext()) {
-          String line = in.nextLine().toUpperCase();
-          wordsToAdd.add(line);
-        }
-      }
-      catch (FileNotFoundException e) {
-        System.out.println("File not found");
-        System.exit(1);
+      File f = new File(fileName);
+      Scanner in = new Scanner(f);
+      while (in.hasNext()) {
+        String line = in.nextLine().toUpperCase();
+        wordsToAdd.add(line);
       }
       addAllWords();
     }
-    public WordSearch(int rows, int cols, String fileName, int randSeed) {
+    public WordSearch(int rows, int cols, String fileName, int randSeed) throws FileNotFoundException {
       row = rows;
       col = cols;
       data = new char[rows][cols];
       randgen = new Random(randSeed);
       clear();
-      try {
-        File f = new File(fileName);
-        Scanner in = new Scanner(f);
-        while (in.hasNext()) {
-          String line = in.nextLine().toUpperCase();
-          wordsToAdd.add(line);
-        }
-      }
-      catch (FileNotFoundException e) {
-        System.out.println("File not found");
-        System.exit(1);
+      File f = new File(fileName);
+      Scanner in = new Scanner(f);
+      while (in.hasNext()) {
+        String line = in.nextLine().toUpperCase();
+        wordsToAdd.add(line);
       }
       addAllWords();
     }
