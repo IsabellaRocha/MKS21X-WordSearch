@@ -107,7 +107,7 @@ public class WordSearch{
       }
       int x = r;
       int y = c;
-      while (x < word.length() + r) {
+      while (x < word.length() + r && y < word.length() + c) {
         if (data[x][y] != '_') {
           if (word.charAt(x - row) != data[x][y]) {
             return false;
@@ -146,123 +146,29 @@ public class WordSearch{
       int fails = 0;
       int idx = 0;
       String word;
-      int rowIncrement;
-      int colIncrement;
-      int rows;
-      int cols;
       int r;
       int c;
-      boolean add;
+      boolean check;
       while (wordsToAdd.size() > 0) {
         idx = Math.abs(randgen.nextInt() % wordsToAdd.size());
         word = wordsToAdd.get(idx).toUpperCase();
-        rowIncrement = randgen.nextInt() % 2;
-        colIncrement = randgen.nextInt() % 2;
-        rows = row + 1 - word.length() * colIncrement;
-        cols = col + 1 - word.length() * rowIncrement;
-        add = false;
-        if (rows > 0 && cols > 0) {
-          while (fails < 150 && !add) {
-            r = Math.abs(randgen.nextInt() % rows);
-            c = Math.abs(randgen.nextInt() % cols);
-            if (addWord(r, c, word, rowIncrement, colIncrement)) {
-              wordsAdded.add(wordsToAdd.remove(idx));
-              add = true;
-            }
-            else {
-              fails += 1;
-            }
+        int rowIncrement = randgen.nextInt() % 2;
+        int colIncrement = randgen.nextInt() % 2;
+        check = false;
+        while (fails < 150 && !check) {
+          r = Math.abs(randgen.nextInt() % row);
+          c = Math.abs(randgen.nextInt() % col);
+          if (addWord(r, c, word, rowIncrement, colIncrement)) {
+            wordsAdded.add(wordsToAdd.remove(idx));
+            check = true;
+          }
+          else {
+            fails += 1;
           }
         }
-        if (!add) {
+        if (!check) {
           wordsToAdd.remove(idx);
         }
       }
-    }
-    public boolean addWordHorizontal(String word,int row, int col){
-      if ((row >= this.row) || (word.length() + col > this.col)) {
-        return false;
-      }
-      int idx = col;
-      while (idx < word.length() + col) {
-        if (data[row][idx] != '_') {
-          if (word.charAt(idx - col) != data[row][idx]) {
-            return false;
-          }
-        }
-        idx += 1;
-      }
-      int x = col;
-      while (x < word.length() + col) {
-        data[row][x] = word.charAt(x - col);
-        x += 1;
-      }
-      return true;
-    }
-
-   /**Attempts to add a given word to the specified position of the WordGrid.
-     *The word is added from top to bottom, must fit on the WordGrid, and must
-     *have a corresponding letter to match any letters that it overlaps.
-     *
-     *@param word is any text to be added to the word grid.
-     *@param row is the vertical locaiton of where you want the word to start.
-     *@param col is the horizontal location of where you want the word to start.
-     *@return true when the word is added successfully. When the word doesn't fit,
-     *or there are overlapping letters that do not match, then false is returned.
-     *and the board is NOT modified.
-     */
-    public boolean addWordVertical(String word,int row, int col){
-      if ((col >= this.col) || (word.length() + row > this.row)) {
-        return false;
-      }
-      int idx = row;
-      while (idx < word.length() + row) {
-        if (data[idx][col] != '_') {
-          if (word.charAt(idx - row) != data[idx][col]) {
-            return false;
-          }
-        }
-        idx += 1;
-      }
-      int x = row;
-      while (x < word.length() + row) {
-        data[x][col] = word.charAt(x - row);
-        x += 1;
-      }
-      return true;
-    }
-    /**Attempts to add a given word to the specified position of the WordGrid.
-     *The word is added from top left to bottom right, must fit on the WordGrid,
-     *and must have a corresponding letter to match any letters that it overlaps.
-     *
-     *@param word is any text to be added to the word grid.
-     *@param row is the vertical locaiton of where you want the word to start.
-     *@param col is the horizontal location of where you want the word to start.
-     *@return true when the word is added successfully. When the word doesn't fit,
-     *or there are overlapping letters that do not match, then false is returned.
-     */
-    public boolean addWordDiagonal(String word,int row, int col){
-      if ((word.length() + row > this.row) || (word.length() + col > this.col)) {
-        return false;
-      }
-      int x = row;
-      int y = col;
-      while (x < word.length() + row) {
-        if (data[x][y] != '_') {
-          if (word.charAt(x - row) != data[x][y]) {
-            return false;
-          }
-        }
-        x += 1;
-        y += 1;
-      }
-      x = row;
-      y = col;
-      while (x < word.length() + row) {
-        data[x][y] = word.charAt(x - row);
-        x += 1;
-        y += 1;
-      }
-      return true;
     }
 }
