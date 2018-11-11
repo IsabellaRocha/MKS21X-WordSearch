@@ -9,6 +9,7 @@ public class WordSearch{
     private Random randgen;
     private ArrayList<String>wordsToAdd = new ArrayList<String>();
     private ArrayList<String>wordsAdded = new ArrayList<String>();
+    private ArrayList<String>wordsFailed = new ArrayList<String>();
 
     /**Initialize the grid to the size specified
      *and fill all of the positions with '_'
@@ -73,6 +74,9 @@ public class WordSearch{
         idx += 1;
       }
       output = output.substring(0,output.length() - 1) + "Words: " + wordsAdded;
+      if (wordsFailed.size() > 0) {
+        output += "\nWords that couldn't be added: " + wordsFailed;
+      }
       return output;
     }
     /**Attempts to add a given word to the specified position of the WordGrid.
@@ -191,7 +195,7 @@ public class WordSearch{
           }
         }
         if (!check) {
-          wordsToAdd.remove(idx);
+          wordsFailed.add(wordsToAdd.remove(idx));
         }
       }
     }
