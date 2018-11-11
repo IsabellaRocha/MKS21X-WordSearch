@@ -143,12 +143,12 @@ public class WordSearch{
         idx += 1;
       }
     }
-      if (rowIncrement == -1 || colIncrement == -1) {
-        while (x >= 0 && y >= 0) {
-        data[x][y] = word.charAt(idx);
-        x += rowIncrement;
-        y += colIncrement;
-        idx += 1;
+    if (rowIncrement == -1 || colIncrement == -1) {
+      while (x >= 0 && y >= 0) {
+      data[x][y] = word.charAt(idx);
+      x += rowIncrement;
+      y += colIncrement;
+      idx += 1;
       }
     }
     return true;
@@ -174,13 +174,13 @@ public class WordSearch{
       while (wordsToAdd.size() > 0) {
         int idx = Math.abs(randgen.nextInt() % wordsToAdd.size());
         String word = wordsToAdd.get(idx).toUpperCase();
-        int rowIncrement = Math.abs(randgen.nextInt()) % 3 - 1;
-        int colIncrement = Math.abs(randgen.nextInt()) % 3 - 1;
         boolean check = false;
         int fails = 0;
         while (fails < 150 && !check) {
           int r = Math.abs(randgen.nextInt() % row);
           int c = Math.abs(randgen.nextInt() % col);
+          int rowIncrement = Math.abs(randgen.nextInt()) % 3 - 1;
+          int colIncrement = Math.abs(randgen.nextInt()) % 3 - 1;
           if (addWord(r, c, word, rowIncrement, colIncrement)) {
             wordsAdded.add(wordsToAdd.remove(idx));
             check = true;
