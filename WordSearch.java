@@ -7,6 +7,7 @@ public class WordSearch{
     private int col;
     private int seed;
     private Random randgen;
+    private boolean seedGiven = false;
     private ArrayList<String>wordsToAdd = new ArrayList<String>();
     private ArrayList<String>wordsAdded = new ArrayList<String>();
     private ArrayList<String>wordsFailed = new ArrayList<String>();
@@ -34,6 +35,8 @@ public class WordSearch{
       row = rows;
       col = cols;
       data = new char[rows][cols];
+      seed = randSeed;
+      seedGiven = true;
       randgen = new Random(randSeed);
       clear();
       File f = new File(fileName);
@@ -76,6 +79,9 @@ public class WordSearch{
       output = output.substring(0,output.length() - 1) + "Words: " + wordsAdded;
       if (wordsFailed.size() > 0) {
         output += "\nWords that couldn't be added: " + wordsFailed;
+      }
+      if (seedGiven) {
+        output += "\nSeed: " + seed;
       }
       return output;
     }
