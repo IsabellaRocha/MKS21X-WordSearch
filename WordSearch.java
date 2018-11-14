@@ -13,16 +13,16 @@ public class WordSearch{
     private ArrayList<String>wordsFailed = new ArrayList<String>();
 
     /**Initialize the grid to the size specified
-     *and fill all of the positions with '_'
+     *and fill all of the positions with ' '
      *@param row is the starting height of the WordSearch
      *@param col is the starting width of the WordSearch
      */
-    public WordSearch(int rows, int cols, String fileName) throws FileNotFoundException {
+    public WordSearch(int rows, int cols, String fileName, boolean answer) throws FileNotFoundException {
       row = rows;
       col = cols;
       data = new char[rows][cols];
       randgen = new Random();
-      seed = randgen.nextInt();
+      seed = randgen.nextInt() % 10001;
       clear();
       File f = new File(fileName);
       Scanner in = new Scanner(f);
@@ -30,8 +30,11 @@ public class WordSearch{
         wordsToAdd.add(in.nextLine().toUpperCase());
       }
       addAllWords();
+      if (!answer) {
+        fillInLetters();
+      }
     }
-    public WordSearch(int rows, int cols, String fileName, int randSeed) throws FileNotFoundException {
+    public WordSearch(int rows, int cols, String fileName, int randSeed, boolean answer) throws FileNotFoundException {
       row = rows;
       col = cols;
       data = new char[rows][cols];
@@ -45,15 +48,18 @@ public class WordSearch{
         wordsToAdd.add(in.nextLine().toUpperCase());
       }
       addAllWords();
+      if (!answer) {
+        fillInLetters();
+      }
     }
 
-    /**Set all values in the WordSearch to underscores'_'*/
+    /**Set all values in the WordSearch to underscores' '*/
     private void clear(){
       int idx = 0;
       while (idx < data.length) {
         int x = 0;
         while (x < data[idx].length) {
-          data[idx][x] = '_';
+          data[idx][x] = ' ';
           x += 1;
         }
         idx += 1;
@@ -120,7 +126,7 @@ public class WordSearch{
       int idx = 0;
       if (rowIncrement == 1 || colIncrement == 1) {
         while (x < word.length() + r && y < word.length() + c) {
-          if (data[x][y] != '_') {
+          if (data[x][y] != ' ') {
             if (word.charAt(idx) != data[x][y]) {
               return false;
             }
@@ -132,7 +138,7 @@ public class WordSearch{
       }
       if (rowIncrement == -1 || colIncrement == -1) {
         while (x > r - word.length() && y > c - word.length()) {
-          if (data[x][y] != '_') {
+          if (data[x][y] != ' ') {
             if (word.charAt(idx) != data[x][y]) {
               return false;
             }
@@ -205,4 +211,49 @@ public class WordSearch{
         }
       }
     }
+    private void fillInLetters() {
+      int idx = 0;
+      while (idx < data.length) {
+        int x = 0;
+        while (x < data[idx].length) {
+          if (data[idx][x] == ' ') {
+            data[idx][x] = (char)((Math.abs(randgen.nextInt()) % 26) + 65);
+          }
+          x += 1;
+        }
+        idx += 1;
+      }
+    }
+    public static void main(String[] args) {
+    if (args.length < 3) {
+      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional)");
+    }
+    int rows = Integer.parseInt(args[0]);
+    int cols = Integer.parseInt(args[1]);
+    String fileName = args[2];
+    int seed = 0;
+    boolean answer = false;
+    if (args.length > 3) {
+      seed = Integer.parseInt(args[3]);
+    }
+    if (args.length > 4) {
+      if (args[4].equals("key"))  {
+        answer = true;
+      }
+    }
+    try {
+      if (seed == 0) {
+        WordSearch a = new WordSearch(rows, cols, fileName, answer);
+        System.out.println(a);
+    }
+      else {
+        WordSearch a = new WordSearch(rows, cols, fileName, seed, answer);
+        System.out.println(a);
+      }
+    }
+    catch(FileNotFoundException e) {
+      System.out.println("File" + fileName + "does not exist");
+      System.exit(1);
+    }
+  }
 }
