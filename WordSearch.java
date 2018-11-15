@@ -10,17 +10,19 @@ public class WordSearch{
     private ArrayList<String>wordsToAdd = new ArrayList<String>();
     private ArrayList<String>wordsAdded = new ArrayList<String>();
     private ArrayList<String>wordsFailed = new ArrayList<String>();
-
     /**Initialize the grid to the size specified
      *and fill all of the positions with ' '
      *@param row is the starting height of the WordSearch
      *@param col is the starting width of the WordSearch
      */
     public WordSearch(int rows, int cols, String fileName) throws FileNotFoundException {
+      if (rows < 0 || cols < 0) {
+        throw new IllegalArgumentException();
+      }
       row = rows;
       col = cols;
       data = new char[rows][cols];
-      seed = (int)(Math.random() * 100000);
+      seed = (int)(Math.random() * 10000);
       randgen = new Random(seed);
       clear();
       File f = new File(fileName);
@@ -32,6 +34,9 @@ public class WordSearch{
       fillInLetters();
     }
     public WordSearch(int rows, int cols, String fileName, int randSeed, boolean answer) throws FileNotFoundException {
+      if (rows < 0 || cols < 0 || randSeed < 0 || randSeed > 10000) {
+        throw new IllegalArgumentException();
+      }
       row = rows;
       col = cols;
       data = new char[rows][cols];
@@ -48,7 +53,6 @@ public class WordSearch{
         fillInLetters();
       }
     }
-
     /**Set all values in the WordSearch to underscores' '*/
     private void clear(){
       int idx = 0;
@@ -61,7 +65,6 @@ public class WordSearch{
         idx += 1;
       }
     }
-
     /**Each row is a new line, there is a space between each letter
      *@return a String with each character separated by spaces, and rows
      *separated by newlines.
@@ -205,6 +208,7 @@ public class WordSearch{
         }
       }
     }
+
     private void fillInLetters() {
       int idx = 0;
       while (idx < data.length) {
@@ -218,17 +222,19 @@ public class WordSearch{
         idx += 1;
       }
     }
+
     public static void arguments(String[] args) {
       if (args.length < 3) {
         throw new NumberFormatException();
       }
     }
+
     public static void main(String[] args) {
     try {
       arguments(args);
     }
     catch(NumberFormatException e) {
-      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is optional)");
+      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
       System.exit(1);
     }
     int rows = Integer.parseInt(args[0]);
@@ -256,11 +262,13 @@ public class WordSearch{
     }
     catch(FileNotFoundException e) {
       System.out.println("File " + fileName + " does not exist");
-      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is optional)");
+      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
+      System.out.println("Rows, columns, and the seed should be positive integers with the seed not exceeding 10,000");
       System.exit(1);
     }
-    catch(NumberFormatException e) {
-      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is optional)");
+    catch (IllegalArgumentException e) {
+      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
+      System.out.println("Rows, columns, and the seed should be positive integers with the seed not exceeding 10,000");
       System.exit(1);
     }
   }
