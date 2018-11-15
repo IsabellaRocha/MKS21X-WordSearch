@@ -218,9 +218,18 @@ public class WordSearch{
         idx += 1;
       }
     }
+    public static void arguments(String[] args) {
+      if (args.length < 3) {
+        throw new NumberFormatException();
+      }
+    }
     public static void main(String[] args) {
-    if (args.length < 3) {
-      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional)");
+    try {
+      arguments(args);
+    }
+    catch(NumberFormatException e) {
+      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is optional)");
+      System.exit(1);
     }
     int rows = Integer.parseInt(args[0]);
     int cols = Integer.parseInt(args[1]);
@@ -246,7 +255,12 @@ public class WordSearch{
       }
     }
     catch(FileNotFoundException e) {
-      System.out.println("File" + fileName + "does not exist");
+      System.out.println("File " + fileName + " does not exist");
+      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is optional)");
+      System.exit(1);
+    }
+    catch(NumberFormatException e) {
+      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is optional)");
       System.exit(1);
     }
   }
