@@ -16,7 +16,7 @@ public class WordSearch{
      *@param col is the starting width of the WordSearch
      */
     public WordSearch(int rows, int cols, String fileName) throws FileNotFoundException {
-      if (rows < 0 || cols < 0) {
+      if (rows <= 0 || cols <= 0) {
         throw new IllegalArgumentException();
       }
       row = rows;
@@ -34,7 +34,7 @@ public class WordSearch{
       fillInLetters();
     }
     public WordSearch(int rows, int cols, String fileName, int randSeed, boolean answer) throws FileNotFoundException {
-      if (rows < 0 || cols < 0 || randSeed < 0 || randSeed > 10000) {
+      if (rows <= 0 || cols <= 0 || randSeed < 0 || randSeed > 10000) {
         throw new IllegalArgumentException();
       }
       row = rows;
