@@ -28,7 +28,7 @@ public class WordSearch{
       File f = new File(fileName);
       Scanner in = new Scanner(f);
       while (in.hasNext()) {
-        wordsToAdd.add(in.nextLine().toUpperCase());
+        wordsToAdd.add(in.next().toUpperCase());
       }
       addAllWords();
       fillInLetters();
@@ -46,7 +46,7 @@ public class WordSearch{
       File f = new File(fileName);
       Scanner in = new Scanner(f);
       while (in.hasNext()) {
-        wordsToAdd.add(in.nextLine().toUpperCase());
+        wordsToAdd.add(in.next().toUpperCase());
       }
       addAllWords();
       if (!answer) {
@@ -230,46 +230,65 @@ public class WordSearch{
     }
 
     public static void main(String[] args) {
-    try {
-      arguments(args);
-    }
-    catch(NumberFormatException e) {
-      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
-      System.exit(1);
-    }
-    int rows = Integer.parseInt(args[0]);
-    int cols = Integer.parseInt(args[1]);
-    String fileName = args[2];
-    int seed = 0;
-    boolean answer = false;
-    if (args.length > 3) {
-      seed = Integer.parseInt(args[3]);
-    }
-    if (args.length > 4) {
-      if (args[4].equals("key"))  {
-        answer = true;
+      int rows;
+      int cols;
+      int seed = 0;
+      try {
+        arguments(args);
+        rows = Integer.parseInt(args[0]);
+        cols = Integer.parseInt(args[1]);
+      }
+      catch(NumberFormatException e) {
+        System.out.println("Enter arguments for your puzzle like this: ");
+        System.out.println("rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
+        System.out.println("Rows, columns, and the seed should be positive integers with the seed not exceeding 10,000");
+        System.exit(1);
+      }
+      if (args.length > 3) {
+        try {
+          seed = Integer.parseInt(args[3]);
+        }
+        catch(NumberFormatException e) {
+          System.out.println("Enter arguments for your puzzle like this: ");
+          System.out.println("rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
+          System.out.println("Rows, columns, and the seed should be positive integers with the seed not exceeding 10,000");
+          System.exit(1);
+        }
+      }
+      String fileName = args[2];
+      boolean answer = false;
+      rows = Integer.parseInt(args[0]);
+      cols = Integer.parseInt(args[1]);
+      if (args.length > 3) {
+        seed = Integer.parseInt(args[3]);
+      }
+      if (args.length > 4) {
+        if (args[4].equals("key"))  {
+          answer = true;
+        }
+      }
+      try {
+        if (seed == 0) {
+          WordSearch a = new WordSearch(rows, cols, fileName);
+          System.out.println(a);
+        }
+        else {
+          WordSearch a = new WordSearch(rows, cols, fileName, seed, answer);
+          System.out.println(a);
+        }
+      }
+      catch(FileNotFoundException e) {
+        System.out.println("File " + fileName + " does not exist");
+        System.out.println("Enter arguments for your puzzle like this: ");
+        System.out.println("rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
+        System.out.println("Rows, columns, and the seed should be positive integers with the seed not exceeding 10,000");
+        System.exit(1);
+      }
+      catch (IllegalArgumentException e) {
+        System.out.println("Enter arguments for your puzzle like this: ");
+        System.out.println("rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
+        System.out.println("Rows, columns, and the seed should be positive integers with the seed not exceeding 10,000");
+        System.exit(1);
       }
     }
-    try {
-      if (seed == 0) {
-        WordSearch a = new WordSearch(rows, cols, fileName);
-        System.out.println(a);
-    }
-      else {
-        WordSearch a = new WordSearch(rows, cols, fileName, seed, answer);
-        System.out.println(a);
-      }
-    }
-    catch(FileNotFoundException e) {
-      System.out.println("File " + fileName + " does not exist");
-      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
-      System.out.println("Rows, columns, and the seed should be positive integers with the seed not exceeding 10,000");
-      System.exit(1);
-    }
-    catch (IllegalArgumentException e) {
-      System.out.println("Enter arguments for your puzzle like this: rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
-      System.out.println("Rows, columns, and the seed should be positive integers with the seed not exceeding 10,000");
-      System.exit(1);
-    }
-  }
 }
