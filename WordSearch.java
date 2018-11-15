@@ -7,7 +7,6 @@ public class WordSearch{
     private int col;
     private int seed;
     private Random randgen;
-    private boolean seedGiven = false;
     private ArrayList<String>wordsToAdd = new ArrayList<String>();
     private ArrayList<String>wordsAdded = new ArrayList<String>();
     private ArrayList<String>wordsFailed = new ArrayList<String>();
@@ -17,12 +16,12 @@ public class WordSearch{
      *@param row is the starting height of the WordSearch
      *@param col is the starting width of the WordSearch
      */
-    public WordSearch(int rows, int cols, String fileName, boolean answer) throws FileNotFoundException {
+    public WordSearch(int rows, int cols, String fileName) throws FileNotFoundException {
       row = rows;
       col = cols;
       data = new char[rows][cols];
-      randgen = new Random();
-      seed = randgen.nextInt() % 10001;
+      seed = (int)(Math.random() * 100000);
+      randgen = new Random(seed);
       clear();
       File f = new File(fileName);
       Scanner in = new Scanner(f);
@@ -30,16 +29,13 @@ public class WordSearch{
         wordsToAdd.add(in.nextLine().toUpperCase());
       }
       addAllWords();
-      if (!answer) {
-        fillInLetters();
-      }
+      fillInLetters();
     }
     public WordSearch(int rows, int cols, String fileName, int randSeed, boolean answer) throws FileNotFoundException {
       row = rows;
       col = cols;
       data = new char[rows][cols];
       seed = randSeed;
-      seedGiven = true;
       randgen = new Random(randSeed);
       clear();
       File f = new File(fileName);
@@ -86,9 +82,7 @@ public class WordSearch{
       if (wordsFailed.size() > 0) {
         output += "\nWords that couldn't be added: " + wordsFailed;
       }
-      if (seedGiven) {
-        output += "\nSeed: " + seed;
-      }
+      output += "\nSeed: " + seed;
       return output;
     }
     /**Attempts to add a given word to the specified position of the WordGrid.
@@ -243,7 +237,7 @@ public class WordSearch{
     }
     try {
       if (seed == 0) {
-        WordSearch a = new WordSearch(rows, cols, fileName, answer);
+        WordSearch a = new WordSearch(rows, cols, fileName);
         System.out.println(a);
     }
       else {
