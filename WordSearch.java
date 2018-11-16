@@ -9,7 +9,6 @@ public class WordSearch{
     private Random randgen;
     private ArrayList<String>wordsToAdd = new ArrayList<String>();
     private ArrayList<String>wordsAdded = new ArrayList<String>();
-    private ArrayList<String>wordsFailed = new ArrayList<String>();
     /**Initialize the grid to the size specified
      *and fill all of the positions with ' '
      *@param row is the starting height of the WordSearch
@@ -81,10 +80,8 @@ public class WordSearch{
         output += "|\n|";
         idx += 1;
       }
-      output = output.substring(0,output.length() - 1) + "Words: " + wordsAdded;
-      if (wordsFailed.size() > 0) {
-        output += "\nWords that couldn't be added: " + wordsFailed;
-      }
+      String x = wordsAdded.toString();
+      output = output.substring(0,output.length() - 1) + "Words: " + x.substring(1, x.length() - 1);
       output += "\nSeed: " + seed;
       return output;
     }
@@ -204,7 +201,7 @@ public class WordSearch{
           }
         }
         if (!check) {
-          wordsFailed.add(wordsToAdd.remove(idx));
+          wordsToAdd.remove(idx);
         }
       }
     }
