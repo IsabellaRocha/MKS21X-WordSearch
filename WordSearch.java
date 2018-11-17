@@ -52,7 +52,7 @@ public class WordSearch{
         fillInLetters();
       }
     }
-    /**Set all values in the WordSearch to underscores' '*/
+    /**Set all values in the WordSearch to spaces' '*/
     private void clear(){
       int idx = 0;
       while (idx < data.length) {
@@ -69,7 +69,7 @@ public class WordSearch{
      *separated by newlines.
      */
     public String toString(){
-      String output = "|";
+      String output = "| ";
       int idx = 0;
       while (idx < data.length) {
         int x = 0;
@@ -77,7 +77,7 @@ public class WordSearch{
           output += data[idx][x] + " ";
           x += 1;
         }
-        output += "|\n|";
+        output += "|\n| ";
         idx += 1;
       }
       String x = wordsAdded.toString();
@@ -98,15 +98,14 @@ public class WordSearch{
     *        false when: the word doesn't fit, OR  rowchange and colchange are both 0,
     *        OR there are overlapping letters that do not match
     */
+    /*[rowIncrement,colIncrement] examples:
+     *[-1,1] would add up and the right because (row -1 each time, col + 1 each time)
+     *[ 1,0] would add downwards because (row+1), with no col change
+     *[ 0,-1] would add towards the left because (col - 1), with no row change
+     */
     private boolean addWord(int r, int c, String word, int rowIncrement, int colIncrement) {
       word = word.toUpperCase();
       if (rowIncrement == 0 && colIncrement == 0) {
-        return false;
-      }
-      if (r >= row || c >= col || r < 0 || c < 0) {
-        return false;
-      }
-      if (rowIncrement > 1 || colIncrement > 1 || rowIncrement < -1 || colIncrement < -1) {
         return false;
       }
       if (r + word.length() * rowIncrement < 0 || r + word.length() * rowIncrement > row) {
@@ -165,23 +164,6 @@ public class WordSearch{
     wordsAdded.add(word);
     return true;
   }
-    /*[rowIncrement,colIncrement] examples:
-     *[-1,1] would add up and the right because (row -1 each time, col + 1 each time)
-     *[ 1,0] would add downwards because (row+1), with no col change
-     *[ 0,-1] would add towards the left because (col - 1), with no row change
-     */
-
-    /**Attempts to add a given word to the specified position of the WordGrid.
-     *The word is added from left to right, must fit on the WordGrid, and must
-     *have a corresponding letter to match any letters that it overlaps.
-     *
-     *@param word is any text to be added to the word grid.
-     *@param row is the vertical locaiton of where you want the word to start.
-     *@param col is the horizontal location of where you want the word to start.
-     *@return true when the word is added successfully. When the word doesn't fit,
-     * or there are overlapping letters that do not match, then false is returned
-     * and the board is NOT modified.
-     */
     private void addAllWords() {
       while (wordsToAdd.size() > 0) {
         int idx = Math.abs(randgen.nextInt() % wordsToAdd.size());
@@ -191,8 +173,8 @@ public class WordSearch{
         while (fails < 150 && !check) {
           int r = Math.abs(randgen.nextInt() % row);
           int c = Math.abs(randgen.nextInt() % col);
-          int rowIncrement = Math.abs(randgen.nextInt()) % 3 - 1;
-          int colIncrement = Math.abs(randgen.nextInt()) % 3 - 1;
+          int rowIncrement = randgen.nextInt() % 2;
+          int colIncrement = randgen.nextInt() % 2;
           if (addWord(r, c, word, rowIncrement, colIncrement)) {
             check = true;
           }
@@ -205,7 +187,6 @@ public class WordSearch{
         }
       }
     }
-
     private void fillInLetters() {
       int idx = 0;
       while (idx < data.length) {
@@ -219,13 +200,11 @@ public class WordSearch{
         idx += 1;
       }
     }
-
     public static void arguments(String[] args) {
       if (args.length < 3) {
         throw new NumberFormatException();
       }
     }
-
     public static void main(String[] args) {
       int rows;
       int cols;
@@ -236,8 +215,8 @@ public class WordSearch{
         cols = Integer.parseInt(args[1]);
       }
       catch(NumberFormatException e) {
-        System.out.println("Enter arguments for your puzzle like this: ");
-        System.out.println("rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
+        System.out.println("Usage: java WordSearch [rows cols filename [randomSeed [answers]]]");
+        System.out.println("Rows cols and filename are necessary, randomSeed and answers are optional");
         System.out.println("Rows, columns, and the seed should be positive integers with the seed not exceeding 10,000");
         System.exit(1);
       }
@@ -246,8 +225,8 @@ public class WordSearch{
           seed = Integer.parseInt(args[3]);
         }
         catch(NumberFormatException e) {
-          System.out.println("Enter arguments for your puzzle like this: ");
-          System.out.println("rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
+          System.out.println("Usage: java WordSearch [rows cols filename [randomSeed [answers]]]");
+          System.out.println("Rows cols and filename are necessary, randomSeed and answers are optional");
           System.out.println("Rows, columns, and the seed should be positive integers with the seed not exceeding 10,000");
           System.exit(1);
         }
@@ -276,14 +255,14 @@ public class WordSearch{
       }
       catch(FileNotFoundException e) {
         System.out.println("File " + fileName + " does not exist");
-        System.out.println("Enter arguments for your puzzle like this: ");
-        System.out.println("rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
+        System.out.println("Usage: java WordSearch [rows cols filename [randomSeed [answers]]]");
+        System.out.println("Rows cols and filename are necessary, randomSeed and answers are optional");
         System.out.println("Rows, columns, and the seed should be positive integers with the seed not exceeding 10,000");
         System.exit(1);
       }
       catch (IllegalArgumentException e) {
-        System.out.println("Enter arguments for your puzzle like this: ");
-        System.out.println("rows cols fileName (seed is optional unless you are printing the key) (key (whether or not you want the answer key) is also optional)");
+        System.out.println("Usage: java WordSearch [rows cols filename [randomSeed [answers]]]");
+        System.out.println("Rows cols and filename are necessary, randomSeed and answers are optional");
         System.out.println("Rows, columns, and the seed should be positive integers with the seed not exceeding 10,000");
         System.exit(1);
       }
