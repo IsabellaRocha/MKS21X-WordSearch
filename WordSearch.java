@@ -69,20 +69,30 @@ public class WordSearch{
      *separated by newlines.
      */
     public String toString(){
-      String output = "| ";
+      String output = "|";
       int idx = 0;
       while (idx < data.length) {
         int x = 0;
         while (x < data[idx].length) {
-          output += data[idx][x] + " ";
+          if (x < data[idx].length - 1) {
+            output += data[idx][x] + " ";
+          }
+          else {
+            output += data[idx][x];
+          }
           x += 1;
         }
-        output += "|\n| ";
+        if (idx < data.length - 1) {
+          output += "|\n|";
+        }
+        else {
+          output += "|\n";
+        }
         idx += 1;
       }
       String x = wordsAdded.toString();
-      output = output.substring(0,output.length() - 1) + "Words: " + x.substring(1, x.length() - 1);
-      output += "\nSeed: " + seed;
+      output = output.substring(0,output.length()) + "Words: " + x.substring(1, x.length() - 1);
+      output += " (seed: " + seed + ")";
       return output;
     }
     /**Attempts to add a given word to the specified position of the WordGrid.
